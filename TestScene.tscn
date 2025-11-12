@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0mnosy0luf5m"]
+
+[ext_resource type="Script" uid="uid://d38gd050t6ujv" path="res://addons/made_with_godot/made_with_godot_widget.gd" id="1_mncer"]
+
+[node name="TestScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MadeWidthGodotWidget" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_mncer")
+metadata/_custom_type_script = "uid://d38gd050t6ujv"
+
+[node name="Preview" type="TextureRect" parent="MadeWidthGodotWidget"]
+layout_mode = 0
+offset_right = 448.0
+offset_bottom = 189.0
+
+[node name="Developer" type="Label" parent="MadeWidthGodotWidget"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "developer"
