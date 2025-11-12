@@ -14,12 +14,10 @@ func _ready() -> void:
 	fetch_index_data()
 
 func fetch_index_data() -> void:
-	# Create HTTPRequest node
 	http_request = HTTPRequest.new()
 	add_child(http_request)
 	http_request.request_completed.connect(_on_index_request_completed)
 	
-	# Make the request
 	var error = http_request.request(INDEX_URL)
 	if error != OK:
 		push_error("MadeWithGodotWidget: Failed to start HTTP request: " + str(error))
@@ -33,7 +31,6 @@ func _on_index_request_completed(result: int, response_code: int, headers: Packe
 		push_error("MadeWithGodotWidget: HTTP request returned code: " + str(response_code))
 		return
 	
-	# Parse the config file (skip first line which is a comment)
 	var config = ConfigFile.new()
 	var content = body.get_string_from_utf8()
 	var lines = content.split("\n")
@@ -46,14 +43,12 @@ func _on_index_request_completed(result: int, response_code: int, headers: Packe
 		push_error("MadeWithGodotWidget: Failed to parse config file: " + str(error))
 		return
 	
-	# Convert to dictionary
 	index_data = {}
 	for section in config.get_sections():
 		index_data[section] = {}
 		for key in config.get_section_keys(section):
 			index_data[section][key] = config.get_value(section, key)
 	
-	# Fetch a random file based on file_count
 	if index_data.has("index") and index_data["index"].has("file_count"):
 		var file_count = int(index_data["index"]["file_count"])
 		var random_index = randi() % file_count + 1  # Random between 1 and file_count
@@ -66,7 +61,6 @@ func _on_index_request_completed(result: int, response_code: int, headers: Packe
 		http_request.queue_free()
 
 func fetch_file(url: String) -> void:
-	# Reuse the existing HTTPRequest
 	http_request.request_completed.disconnect(_on_index_request_completed)
 	http_request.request_completed.connect(_on_file_request_completed)
 	
@@ -86,7 +80,6 @@ func _on_file_request_completed(result: int, response_code: int, headers: Packed
 		http_request.queue_free()
 		return
 	
-	# Parse the config file (skip first line which is a comment)
 	var config = ConfigFile.new()
 	var content = body.get_string_from_utf8()
 	var lines = (content.split("\n") as Array[String]).filter(func(line): return !line.begins_with("#"))
@@ -98,24 +91,20 @@ func _on_file_request_completed(result: int, response_code: int, headers: Packed
 		http_request.queue_free()
 		return
 	
-	# Convert to dictionary
 	var file_data: Dictionary = {}
 	for section in config.get_sections():
 		file_data[section] = {}
 		for key in config.get_section_keys(section):
 			file_data[section][key] = config.get_value(section, key)
 	
-	# Pick a random link from the data
 	var link_keys = file_data.keys()
 	if link_keys.size() > 0:
 		var random_link_key = link_keys[randi() % link_keys.size()]
 		selected_link = file_data[random_link_key]
 		
-		# Set developer label
 		if developer_label and selected_link.has("developer"):
 			developer_label.text = selected_link["developer"]
 		
-		# Fetch the preview image
 		if selected_link.has("preview_image"):
 			fetch_image(selected_link["preview_image"])
 		else:
@@ -125,7 +114,6 @@ func _on_file_request_completed(result: int, response_code: int, headers: Packed
 		http_request.queue_free()
 
 func fetch_image(url: String) -> void:
-	# Reuse the existing HTTPRequest
 	http_request.request_completed.disconnect(_on_file_request_completed)
 	http_request.request_completed.connect(_on_image_request_completed)
 	
@@ -145,11 +133,9 @@ func _on_image_request_completed(result: int, response_code: int, headers: Packe
 		http_request.queue_free()
 		return
 	
-	# Create image from buffer
 	var image = Image.new()
 	var error: Error
 	
-	# Try to load as different formats
 	if body.slice(0, 3) == PackedByteArray([0xFF, 0xD8, 0xFF]):
 		error = image.load_jpg_from_buffer(body)
 	elif body.slice(0, 8) == PackedByteArray([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]):
@@ -165,10 +151,8 @@ func _on_image_request_completed(result: int, response_code: int, headers: Packe
 		http_request.queue_free()
 		return
 	
-	# Create texture and set it
 	var texture = ImageTexture.create_from_image(image)
 	if texture_rect:
 		texture_rect.texture = texture
 	
-	# Clean up
 	http_request.queue_free()
