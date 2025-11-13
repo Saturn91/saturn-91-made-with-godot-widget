@@ -1,26 +1,21 @@
 class_name MadeWithGodotSource extends Node
 
-# Properties
+@export var debug: bool = false
+@export var data_source = "https://raw.githubusercontent.com/Saturn91/Saturn91MadeWithGodotData"
+
 static var success: bool = false
 static var error: String = ""
 static var data: MadeWithGodotDTO
 static var has_new_data: bool = false
-@export var debug: bool = false
 
-# Constants
-const INDEX_URL = "https://raw.githubusercontent.com/Saturn91/Saturn91MadeWithGodotData/refs/heads/master/_index.cfg"
 const FALLBACK_RESOURCE_PATH = "res://addons/made_with_godot/resources/made_with_godot_fall_back.tres"
 
-# Internal variables
 var http_request: HTTPRequest
 var index_data: Dictionary = {}
 var is_fetching: bool = false
 
 func _ready() -> void:
-	# Load fallback data by default
 	load_fallback_data()
-	
-	# Start fetching data
 	fetch_data()
 
 func fetch_data() -> void:
@@ -33,7 +28,6 @@ func fetch_data() -> void:
 	success = false
 	error = ""
 	
-	# Create HTTPRequest node
 	http_request = HTTPRequest.new()
 	add_child(http_request)
 	http_request.request_completed.connect(_on_index_request_completed)
@@ -41,8 +35,7 @@ func fetch_data() -> void:
 	if debug:
 		print("MadeWithGodotDataSource: Starting data fetch")
 	
-	# Make the request
-	var request_error = http_request.request(INDEX_URL)
+	var request_error = http_request.request(data_source + "/refs/heads/master/_index.cfg")
 	if request_error != OK:
 		error = "Failed to start HTTP request: " + str(request_error)
 		is_fetching = false
@@ -67,7 +60,6 @@ func _on_index_request_completed(result: int, response_code: int, headers: Packe
 			print("MadeWithGodotDataSource: " + error)
 		return
 	
-	# Parse the config file (skip first line which is a comment)
 	var config = ConfigFile.new()
 	var content = body.get_string_from_utf8()
 	var lines = content.split("\n")
@@ -84,7 +76,6 @@ func _on_index_request_completed(result: int, response_code: int, headers: Packe
 			print("MadeWithGodotDataSource: " + error)
 		return
 	
-	# Convert to dictionary
 	index_data = {}
 	for section in config.get_sections():
 		index_data[section] = {}
@@ -94,12 +85,11 @@ func _on_index_request_completed(result: int, response_code: int, headers: Packe
 	if debug:
 		print("MadeWithGodotDataSource: Index data loaded successfully")
 	
-	# Fetch a random file based on file_count
 	if index_data.has("index") and index_data["index"].has("file_count"):
 		var file_count = int(index_data["index"]["file_count"])
 		var random_index = randi() % file_count + 1  # Random between 1 and file_count
 		var file_number = random_index - 1  # n = index - 1
-		var file_url = "https://raw.githubusercontent.com/Saturn91/Saturn91MadeWithGodotData/refs/heads/master/file_%d.cfg" % file_number
+		var file_url = data_source + "/refs/heads/master/file_%d.cfg" % file_number
 		
 		fetch_file(file_url)
 	else:
@@ -110,7 +100,6 @@ func _on_index_request_completed(result: int, response_code: int, headers: Packe
 			print("MadeWithGodotDataSource: " + error)
 
 func fetch_file(url: String) -> void:
-	# Reuse the existing HTTPRequest
 	http_request.request_completed.disconnect(_on_index_request_completed)
 	http_request.request_completed.connect(_on_file_request_completed)
 	
@@ -154,7 +143,6 @@ func _on_file_request_completed(result: int, response_code: int, headers: Packed
 			print("MadeWithGodotDataSource: " + error)
 		return
 	
-	# Convert to dictionary
 	var file_data: Dictionary = {}
 	for section in config.get_sections():
 		file_data[section] = {}
@@ -167,7 +155,6 @@ func _on_file_request_completed(result: int, response_code: int, headers: Packed
 		var random_link_key = link_keys[randi() % link_keys.size()]
 		var selected_link = file_data[random_link_key]
 		
-		# Create new MadeWithGodotDTO with fetched data
 		data = MadeWithGodotDTO.new()
 		data.url = selected_link.get("url", "")
 		data.developer = selected_link.get("developer", "")
@@ -191,7 +178,6 @@ func _on_file_request_completed(result: int, response_code: int, headers: Packed
 			print("MadeWithGodotDataSource: " + error)
 
 func fetch_image(url: String) -> void:
-	# Reuse the existing HTTPRequest
 	http_request.request_completed.disconnect(_on_file_request_completed)
 	http_request.request_completed.connect(_on_image_request_completed)
 	
@@ -220,7 +206,6 @@ func _on_image_request_completed(result: int, response_code: int, headers: Packe
 			print("MadeWithGodotDataSource: " + error)
 		return
 	
-	# Create image from buffer
 	var image = Image.new()
 	var load_error: Error
 	
@@ -243,7 +228,6 @@ func _on_image_request_completed(result: int, response_code: int, headers: Packe
 			print("MadeWithGodotDataSource: " + error)
 		return
 	
-	# Create texture and set it
 	var texture = ImageTexture.create_from_image(image)
 	data.preview_image = texture
 	
@@ -262,17 +246,14 @@ func load_fallback_data() -> void:
 		if debug:
 			print("MadeWithGodotDataSource: Fallback data loaded")
 	else:
-		# Create empty fallback
 		data = MadeWithGodotDTO.new()
 		if debug:
 			print("MadeWithGodotDataSource: Created empty fallback data")
 
-# Public method to retry fetching data
 func retry_fetch() -> void:
 	if debug:
 		print("MadeWithGodotDataSource: Retrying data fetch")
 	fetch_data()
 
-# Public method to acknowledge new data
 static func acknowledge_new_data() -> void:
 	has_new_data = false
