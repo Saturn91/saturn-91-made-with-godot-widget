@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MadeWithGodotDTO" load_steps=3 format=3 uid="uid://bcpgp4felal5b"]
+
+[ext_resource type="Script" uid="uid://du2safpuwr3s" path="res://addons/made_with_godot/made_with_godot_data.gd" id="1_7rh5c"]
+[ext_resource type="Texture2D" uid="uid://britr6vu2qdbv" path="res://addons/made_with_godot/resources/default_header.jpg" id="1_a5s0j"]
+
+[resource]
+script = ExtResource("1_7rh5c")
+url = "https://store.steampowered.com/app/3734980/A_Simple_job/"
+developer = "Saturn91.dev"
+dev_link = "https://saturn91.dev/"
+preview_image = ExtResource("1_a5s0j")

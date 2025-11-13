@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://c2bl7bwum7whd"]
+[gd_scene load_steps=3 format=3 uid="uid://r3wx8fbvh4o7"]
 
 [ext_resource type="Script" uid="uid://d38gd050t6ujv" path="res://addons/made_with_godot/made_with_godot_widget.gd" id="1_w6gqo"]
 [ext_resource type="Texture2D" uid="uid://britr6vu2qdbv" path="res://addons/made_with_godot/resources/default_header.jpg" id="2_mjrxu"]
 
-[node name="MadeWidthGodotWidget" type="Control"]
+[node name="MadeWithGodotWidget" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
