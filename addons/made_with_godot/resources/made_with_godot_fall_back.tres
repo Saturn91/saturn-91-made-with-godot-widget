@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_7rh5c")
 url = "https://store.steampowered.com/app/3734980/A_Simple_job/"
-developer = "Saturn91.dev"
+developer = "Saturn91"
 dev_link = "https://saturn91.dev/"
 preview_image = ExtResource("1_a5s0j")
