@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://r3wx8fbvh4o7"]
+[gd_scene load_steps=9 format=3 uid="uid://r3wx8fbvh4o7"]
 
 [ext_resource type="Script" uid="uid://d38gd050t6ujv" path="res://addons/made_with_godot/made_with_godot_widget.gd" id="1_w6gqo"]
 [ext_resource type="Script" uid="uid://d30y8amcgttuv" path="res://addons/made_with_godot/alsoCheckOutText.gd" id="2_7h128"]
 [ext_resource type="Texture2D" uid="uid://britr6vu2qdbv" path="res://addons/made_with_godot/resources/default_header.jpg" id="2_mjrxu"]
 [ext_resource type="Texture2D" uid="uid://blqqagempgv7t" path="res://addons/made_with_godot/resources/logo.png" id="3_j1xkh"]
 [ext_resource type="Script" uid="uid://dynulhnyq5hpq" path="res://addons/made_with_godot/qr_code/qr_code_rect.gd" id="3_mo5e7"]
+[ext_resource type="FontFile" uid="uid://bsi0a7c00tbdj" path="res://addons/made_with_godot/resources/Play-Bold.ttf" id="5_w8hjn"]
 
 [sub_resource type="Image" id="Image_mo5e7"]
 data = {
@@ -86,6 +87,7 @@ layout_mode = 2
 
 [node name="Developer" type="Label" parent="HBoxContainer/Preview/MarginContainer/HBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("5_w8hjn")
 text = "made with "
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer/Preview/MarginContainer/HBoxContainer"]
@@ -100,4 +102,5 @@ layout_mode = 2
 
 [node name="developer" type="Label" parent="HBoxContainer/Preview/MarginContainer/HBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("5_w8hjn")
 text = "by #dev"
