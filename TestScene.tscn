@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b0mnosy0luf5m"]
 
 [ext_resource type="Script" uid="uid://chl8q3i2buboq" path="res://addons/made_with_godot/made_with_godot_data_source.gd" id="1_cguwc"]
-[ext_resource type="PackedScene" uid="uid://r3wx8fbvh4o7" path="res://addons/made_with_godot/made_width_godot_widget.tscn" id="1_mncer"]
+[ext_resource type="PackedScene" uid="uid://r3wx8fbvh4o7" path="res://addons/made_with_godot/made_with_godot_widget.tscn" id="1_mncer"]
 
 [node name="TestScene" type="Control"]
 layout_mode = 3
