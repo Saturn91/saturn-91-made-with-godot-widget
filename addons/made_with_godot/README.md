@@ -20,12 +20,22 @@ This Godot addon provides a widget that displays a list of developers and their 
 The widget fetches and updates data at runtime, ensuring the latest information is always displayed. The QR code is generated in byte mode for full compatibility with all URLs.
 
 ## Installation
-1. Copy the `addons/made_with_godot/` folder into your Godot project's `addons/` directory.
+1. Add the plugin
 2. Enable the plugin in **Project > Project Settings > Plugins**.
 
-## Usage
-- Add the `MadeWithGodotWidget` node to your scene.
-- The widget will automatically fetch and display the latest developer/project data.
+## Usage in the Editor
+
+1. Add a `MadeWithGodotSource` node to your scene:
+	- Press `Ctrl + A` and search for "MadeWithGodotSource".
+	- This node will fetch the required data from the remote repository.
+
+2. Add a `MadeWithGodotWidget` node to your menu or canvas:
+	- Press `Ctrl + A` and search for "MadeWithGodotWidget".
+	- This is the visual widget that displays the developer/project info and QR code.
+
+The widget will automatically fetch and display the latest developer/project data at runtime.
+
+![alt text](example.png)
 
 ## Contributing
 To add your own project or developer info, submit a PR to the [data repository](https://github.com/Saturn91/made-with-godot-data).
