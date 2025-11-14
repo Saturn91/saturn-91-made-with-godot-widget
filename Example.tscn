@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b0mnosy0luf5m"]
 
-[ext_resource type="Script" uid="uid://chl8q3i2buboq" path="res://addons/made_with_godot/made_with_godot_data_source.gd" id="1_cguwc"]
-[ext_resource type="PackedScene" uid="uid://r3wx8fbvh4o7" path="res://addons/made_with_godot/made_with_godot_widget.tscn" id="1_mncer"]
+[ext_resource type="Script" uid="uid://chl8q3i2buboq" path="res://addons/made_with_godot/made_with_godot_data_source.gd" id="1_2yy3l"]
+[ext_resource type="PackedScene" uid="uid://r3wx8fbvh4o7" path="res://addons/made_with_godot/made_with_godot_widget.tscn" id="2_lmghl"]
 
 [node name="TestScene" type="Control"]
 layout_mode = 3
@@ -12,10 +12,11 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MadeWithGodotSource" type="Node" parent="."]
-script = ExtResource("1_cguwc")
+script = ExtResource("1_2yy3l")
+debug = true
 metadata/_custom_type_script = "uid://chl8q3i2buboq"
 
-[node name="MadeWithGodotWidget" parent="." instance=ExtResource("1_mncer")]
+[node name="MadeWithGodotWidget" parent="." instance=ExtResource("2_lmghl")]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
