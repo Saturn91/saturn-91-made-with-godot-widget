@@ -1,8 +1,10 @@
 class_name MadeWidthGodotWidget extends CenterContainer
 
-@onready var texture_rect: TextureRect = $HBoxContainer/Preview
-@onready var developer_label: Label = $HBoxContainer/Preview/MarginContainer/HBoxContainer/developer
-@onready var qrcode: QRCodeRect = $HBoxContainer/QRCodeRect
+@onready var texture_rect: TextureRect = $PanelContainer/HBoxContainer/Preview
+@onready var developer_label: Label = $PanelContainer/HBoxContainer/Preview/MarginContainer/HBoxContainer/developer
+@onready var qrcode: QRCodeRect = $PanelContainer/HBoxContainer/QRCodeRect
+@onready var loadingBg: ColorRect = $PanelContainer/LoadingBg
+@onready var loadingLabel: Label = $PanelContainer/LoadingLabel
 
 var original_dev_text := ""
 
@@ -11,6 +13,14 @@ func _ready() -> void:
 	update_ui()
 
 func _process(delta: float) -> void:
+	if MadeWithGodotSource.is_fetching and not loadingBg.visible:
+		loadingBg.show()
+		loadingLabel.show()
+		
+	if !MadeWithGodotSource.is_fetching and loadingBg.visible:
+		loadingBg.hide()
+		loadingLabel.hide()
+	
 	# Check if new data is available
 	if MadeWithGodotSource.has_new_data:
 		update_ui()

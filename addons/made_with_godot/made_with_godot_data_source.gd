@@ -6,17 +6,47 @@ class_name MadeWithGodotSource extends Node
 static var success: bool = false
 static var error: String = ""
 static var data: MadeWithGodotDTO
+static var is_fetching: bool = false
 static var has_new_data: bool = false
 
 const FALLBACK_RESOURCE_PATH = "res://addons/made_with_godot/resources/made_with_godot_fall_back.tres"
 
+
 var http_request: HTTPRequest
 var index_data: Dictionary = {}
-var is_fetching: bool = false
+var _fallback_timer: Timer
+
 
 func _ready() -> void:
 	load_fallback_data()
+	_start_fallback_timer()
 	fetch_data()
+
+func _start_fallback_timer() -> void:
+	if _fallback_timer:
+		_fallback_timer.queue_free()
+	_fallback_timer = Timer.new()
+	_fallback_timer.wait_time = 2.0
+	_fallback_timer.one_shot = true
+	_fallback_timer.timeout.connect(_on_fallback_timeout)
+	add_child(_fallback_timer)
+	_fallback_timer.start()
+
+func _stop_fallback_timer() -> void:
+	if _fallback_timer and _fallback_timer.is_inside_tree():
+		_fallback_timer.stop()
+		_fallback_timer.queue_free()
+		_fallback_timer = null
+
+func _on_fallback_timeout() -> void:
+	if debug:
+		print("MadeWithGodotDataSource: Fallback timer triggered, showing fallback data.")
+	load_fallback_data()
+	success = true
+	has_new_data = true
+	is_fetching = false
+	if http_request and http_request.is_inside_tree():
+		http_request.queue_free()
 
 func fetch_data() -> void:
 	if is_fetching:
@@ -44,6 +74,7 @@ func fetch_data() -> void:
 			print("MadeWithGodotDataSource: " + error)
 
 func _on_index_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	_stop_fallback_timer()
 	if result != HTTPRequest.RESULT_SUCCESS:
 		error = "HTTP request failed with result: " + str(result)
 		is_fetching = false
@@ -112,6 +143,7 @@ func fetch_file(url: String) -> void:
 			print("MadeWithGodotDataSource: " + error)
 
 func _on_file_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	_stop_fallback_timer()
 	if result != HTTPRequest.RESULT_SUCCESS:
 		error = "File request failed with result: " + str(result)
 		is_fetching = false
@@ -190,6 +222,7 @@ func fetch_image(url: String) -> void:
 			print("MadeWithGodotDataSource: " + error)
 
 func _on_image_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	_stop_fallback_timer()
 	if result != HTTPRequest.RESULT_SUCCESS:
 		error = "Image request failed with result: " + str(result)
 		is_fetching = false
