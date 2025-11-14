@@ -119,6 +119,6 @@ color = Color(0, 0, 0, 0.8980392)
 
 [node name="LoadingLabel" type="Label" parent="PanelContainer"]
 layout_mode = 2
-text = "loading..."
+text = "loading"
 label_settings = SubResource("LabelSettings_3tsp1")
 horizontal_alignment = 1
