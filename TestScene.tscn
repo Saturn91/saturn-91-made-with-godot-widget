@@ -13,7 +13,6 @@ grow_vertical = 2
 
 [node name="MadeWithGodotSource" type="Node" parent="."]
 script = ExtResource("1_cguwc")
-debug = true
 metadata/_custom_type_script = "uid://chl8q3i2buboq"
 
 [node name="MadeWithGodotWidget" parent="." instance=ExtResource("1_mncer")]

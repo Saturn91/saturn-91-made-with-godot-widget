@@ -9,6 +9,9 @@ static var data: MadeWithGodotDTO
 static var is_fetching: bool = false
 static var has_new_data: bool = false
 
+
+# Allow developers to set a custom fallback resource
+@export var default_fallback: MadeWithGodotDTO = null
 const FALLBACK_RESOURCE_PATH = "res://addons/made_with_godot/resources/made_with_godot_fall_back.tres"
 
 
@@ -273,7 +276,15 @@ func _on_image_request_completed(result: int, response_code: int, headers: Packe
 		print("MadeWithGodotDataSource: Data loaded successfully with image")
 
 func load_fallback_data() -> void:
-	var fallback_resource = load(FALLBACK_RESOURCE_PATH)
+	var fallback_resource: Resource = null
+	if default_fallback and default_fallback is MadeWithGodotDTO:
+		fallback_resource = default_fallback
+		if debug:
+			print("MadeWithGodotDataSource: Using custom fallback data")
+	else:
+		fallback_resource = load(FALLBACK_RESOURCE_PATH)
+		if debug and fallback_resource:
+			print("MadeWithGodotDataSource: Using built-in fallback data")
 	if fallback_resource and fallback_resource is MadeWithGodotDTO:
 		data = fallback_resource.duplicate()
 		if debug:
