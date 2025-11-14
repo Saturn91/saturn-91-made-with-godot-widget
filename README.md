@@ -6,6 +6,7 @@ This plugin fetches developer showcase data from a remote file hosted on GitHub.
 
 - **Data repository:** [https://github.com/Saturn91/made-with-godot-data](https://github.com/Saturn91/made-with-godot-data)
 - To add your own data, fork the repository above, add your entry, and open a PR.
+- Include a screenshot of the widget added to your main menu in your PR 
 
 ## Credits & Ease of Use
 For ease of use, I copied the content of the [https://kenyoni-software.github.io/godot-addons/addons/qr_code/](https://kenyoni-software.github.io/godot-addons/addons/qr_code/) Godot QR code addon and adjusted it slightly for my needs. Please refer to their project for the original source and more details.
